@@ -9,7 +9,7 @@ services:
         VITE_AMAP_WEB_JS_KEY: ${VITE_AMAP_WEB_JS_KEY:-your_amap_web_js_api_key_here}
     container_name: helloagents-trip-planner
     ports:
-      - "7860:7860"
+      - "6003:6003"
     environment:
       - LLM_API_KEY=${LLM_API_KEY:-your_key}
       - LLM_BASE_URL=${LLM_BASE_URL:-your_url}
@@ -18,6 +18,6 @@ services:
       - VITE_AMAP_WEB_KEY=${VITE_AMAP_WEB_KEY:-your_web_api_key_here}
       - XHS_COOKIE=${XHS_COOKIE:-your_xhs_cookie_here}
       - HOST=0.0.0.0
-      - PORT=7860
+      - PORT=6003
       - LOG_LEVEL=INFO
     restart: unless-stopped

@@ -28,10 +28,10 @@ class Settings(BaseSettings):
 
     # 服务器配置
     host: str = "0.0.0.0"
-    port: int = 8000
+    port: int = 6003
 
     # CORS配置 - 使用字符串,在代码中分割
-    cors_origins: str = "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173,http://127.0.0.1:3000"
+    cors_origins: str = "http://localhost:6004,http://localhost:3000,http://127.0.0.1:6004,http://127.0.0.1:3000"
 
     # 高德地图API配置
     vite_amap_web_key: str = ""

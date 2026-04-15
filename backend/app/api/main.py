@@ -80,8 +80,8 @@ async def startup_event():
         raise
     
     print("\n" + "="*60)
-    print("📚 API文档: http://localhost:8000/docs")
-    print("📖 ReDoc文档: http://localhost:8000/redoc")
+    print("📚 API文档: http://localhost:6003/docs")
+    print("📖 ReDoc文档: http://localhost:6003/redoc")
     print("="*60 + "\n")
 
 

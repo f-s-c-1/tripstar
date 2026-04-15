@@ -9,7 +9,7 @@ import type {
 } from '@/types'
 import { i18n } from '@/i18n'
 
-const ENV_API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000'
+const ENV_API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:6003'
 const ENV_AMAP_WEB_JS_KEY = import.meta.env.VITE_AMAP_WEB_JS_KEY ?? ''
 const RUNTIME_API_BASE_STORAGE_KEY = 'tripstar.runtime.api_base_url'
 const RUNTIME_AMAP_WEB_JS_KEY_STORAGE_KEY = 'tripstar.runtime.amap_web_js_key'
@@ -32,7 +32,7 @@ const normalizeBaseUrl = (value: string | null | undefined): string => {
 
 const normalizeText = (value: unknown): string => String(value ?? '').trim()
 
-const DEFAULT_API_BASE_URL = normalizeBaseUrl(ENV_API_BASE_URL) || 'http://localhost:8000'
+const DEFAULT_API_BASE_URL = normalizeBaseUrl(ENV_API_BASE_URL) || 'http://localhost:6003'
 const DEFAULT_AMAP_WEB_JS_KEY = normalizeText(ENV_AMAP_WEB_JS_KEY)
 
 interface SubmitTripPlanResponse {
