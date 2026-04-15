@@ -214,4 +214,40 @@ main {
     width: 85%;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .swiper-slide {
+    width: 9rem;
+    height: 22rem;
+  }
+
+  .swiper-slide-img {
+    height: 15rem;
+  }
+
+  .swiper-slide-content {
+    padding: 0 1rem;
+
+    h2 {
+      font-size: 1.1rem;
+    }
+
+    p {
+      font-size: 0.8rem;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+    }
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .swiper-slide {
+    width: 8rem;
+    height: 20rem;
+  }
+
+  .swiper-slide-img {
+    height: 13rem;
+  }
+}
 </style>

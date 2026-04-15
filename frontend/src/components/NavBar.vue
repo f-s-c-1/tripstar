@@ -65,7 +65,7 @@
       v-model:open="settingsVisible"
       class="settings-modal"
       :title="t('settings.title')"
-      :width="820"
+      :width="isMobile ? '95%' : 820"
       :confirm-loading="settingsSaving"
       :ok-text="t('settings.saveApply')"
       :cancel-text="t('settings.cancel')"
@@ -150,13 +150,19 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref, onMounted, onUnmounted } from 'vue'
 import { message } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
 import type { RuntimeSettings } from '@/types'
 import { getRuntimeSettings, saveRuntimeSettings } from '@/services/api'
 
 const { t, locale } = useI18n()
+
+const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1024)
+const onResize = () => { windowWidth.value = window.innerWidth }
+onMounted(() => window.addEventListener('resize', onResize))
+onUnmounted(() => window.removeEventListener('resize', onResize))
+const isMobile = computed(() => windowWidth.value <= 768)
 const settingsVisible = ref(false)
 const settingsLoading = ref(false)
 const settingsSaving = ref(false)
@@ -513,5 +519,16 @@ const saveSettingsNow = async () => {
 
 .runtime-settings-form :deep(.ant-form-item) {
   margin-bottom: 12px;
+}
+
+@media (max-width: 768px) {
+  .runtime-settings-grid {
+    display: flex !important;
+    flex-direction: column;
+  }
+
+  .runtime-settings-grid :deep(.ant-form-item) {
+    width: 100% !important;
+  }
 }
 </style>

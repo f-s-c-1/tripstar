@@ -1132,15 +1132,31 @@ const sendChatMessage = async () => {
 
 @media (max-width: 768px) {
   .ai-chat-floating {
-    left: 12px;
-    bottom: 12px;
-    width: 220px;
-    height: 220px;
+    left: 4px;
+    bottom: 4px;
+    transform: scale(0.25);
   }
 
   .container-wrap.open .content-card {
-    width: 300px;
-    height: 220px;
+    width: calc(100vw / 0.25 - 80px);
+    height: calc(85vh / 0.25);
+  }
+
+  .container-ai-chat {
+    padding: 24px !important;
+  }
+
+  .container-ai-chat .chat-close-btn {
+    top: 12px;
+    right: 12px;
+  }
+
+  .container-wrap .card .chat {
+    padding: 80px 12px 12px;
+  }
+
+  .card .chat .chat-bot .chat-history {
+    padding: 16px;
   }
 
   .container-wrap:after {
