@@ -1792,7 +1792,7 @@ const loadAttractionPhotos = async () => {
         )
         const data = await response.json()
         if (data.success && data.data.photo_url) {
-          attractionPhotos.value[name] = data.data.photo_url
+          attractionPhotos.value[name] = `${apiBase}/api/poi/proxy-image?url=${encodeURIComponent(data.data.photo_url)}`
         }
       } catch (err) {
         console.error(`获取${name}图片失败:`, err)

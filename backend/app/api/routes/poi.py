@@ -130,3 +130,25 @@ async def get_attraction_photo(name: str, city: Optional[str] = None):
             detail=f"获取景点图片失败: {str(e)}"
         )
 
+
+@router.get(
+    "/proxy-image",
+    summary="代理图片",
+    description="代理小红书图片，解决防盗链问题"
+)
+async def proxy_image(url: str):
+    """代理图片请求，绕过小红书防盗链"""
+    import httpx
+    from fastapi.responses import Response
+    try:
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(url, headers={
+                "Referer": "https://www.xiaohongshu.com",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+            }, timeout=10)
+            return Response(
+                content=resp.content,
+                media_type=resp.headers.get("content-type", "image/jpeg")
+            )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"图片代理失败: {str(e)}")
