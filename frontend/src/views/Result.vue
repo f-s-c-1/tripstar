@@ -284,7 +284,7 @@
               <a-divider orientation="left">{{ t('result.attractionTitle') }}</a-divider>
               <a-list
                 :data-source="day.attractions"
-                :grid="{ gutter: 16, column: 2 }"
+                :grid="attractionListGrid"
               >
                 <template #renderItem="{ item, index }">
                   <a-list-item>
@@ -562,7 +562,7 @@
       </div>
     </a-back-top>
 
-    <AIChat :trip-plan="tripPlan" />
+    <AIChat :trip-plan="tripPlan" @update-trip="onTripUpdatedByAI" />
   </div>
 </template>
 
@@ -593,6 +593,21 @@ const router = useRouter()
 const route = useRoute()
 const { t, locale } = useI18n()
 const tripPlan = ref<TripPlan | null>(null)
+
+const onTripUpdatedByAI = (updated: TripPlan) => {
+  tripPlan.value = updated
+}
+
+// 响应式窗口宽度，用于控制列数等自适应逻辑
+const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1200)
+const onWindowResize = () => { windowWidth.value = window.innerWidth }
+
+// 景点列表列数：480px以下1列，其余2列
+const attractionListGrid = computed(() => ({
+  gutter: windowWidth.value <= 480 ? 12 : 16,
+  column: windowWidth.value <= 480 ? 1 : 2,
+}))
+
 const planId = ref('')
 const editMode = ref(false)
 const originalPlan = ref<TripPlan | null>(null)
@@ -1201,6 +1216,7 @@ const buildKgBoundaryPositionMap = (
 onMounted(async () => {
   if (typeof window !== 'undefined') {
     window.addEventListener(RUNTIME_SETTINGS_UPDATED_EVENT, handleRuntimeSettingsUpdated)
+    window.addEventListener('resize', onWindowResize)
   }
   const storedPlanId = String(sessionStorage.getItem('planId') || '')
   planId.value = String(route.query.plan_id || storedPlanId || '')
@@ -1265,6 +1281,7 @@ watch(
 onUnmounted(() => {
   if (typeof window !== 'undefined') {
     window.removeEventListener(RUNTIME_SETTINGS_UPDATED_EVENT, handleRuntimeSettingsUpdated)
+    window.removeEventListener('resize', onWindowResize)
   }
   destroyOverviewSwiper()
   if (map) {
@@ -4050,18 +4067,15 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
 /* 响应式设计 */
 @media (max-width: 768px) {
   .result-main {
-    padding: 60px 8px 24px;
+    padding: 60px 10px 24px;
   }
 
   .content-wrapper {
-    padding: 10px;
-    border-radius: 14px;
+    padding: 14px;
+    border-radius: 16px;
   }
 
-  /* ===== 顶部导航：tab + 操作按钮改为上下两行 ===== */
   .top-switch-nav {
-    flex-direction: column;
-    align-items: stretch;
     gap: 8px;
   }
 
@@ -4077,11 +4091,6 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
     min-width: max-content;
   }
 
-  .top-switch-menu :deep(.ant-menu-item) {
-    padding: 0 10px !important;
-    font-size: 13px !important;
-  }
-
   .top-switch-menu-wrap::-webkit-scrollbar {
     width: 0;
     height: 0;
@@ -4089,24 +4098,22 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
   }
 
   .top-switch-actions {
-    max-width: 100%;
-    justify-content: flex-end;
+    max-width: 44%;
+    flex-shrink: 0;
   }
 
   .top-switch-actions :deep(.ant-space) {
     column-gap: 6px !important;
     row-gap: 6px !important;
-    flex-wrap: wrap;
   }
 
   .top-switch-actions :deep(.ant-btn-default),
   .top-switch-actions :deep(.ant-btn-primary) {
     height: 32px !important;
     padding: 0 10px !important;
-    font-size: 12px !important;
+    font-size: 11px !important;
   }
 
-  /* ===== 顶部信息区（预算/地图）纵向排列 ===== */
   .top-info-section {
     flex-direction: column;
   }
@@ -4115,118 +4122,77 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
     flex: auto;
   }
 
-  /* ===== 预算汇总 ===== */
+  /* 天气 */
+  .weather-dashboard {
+    flex-direction: column;
+    min-height: auto;
+    height: auto;
+    border-radius: 16px;
+  }
+
+  .weather-side {
+    flex: 0 0 auto;
+    width: 100%;
+    min-height: 220px;
+    border-radius: 16px 16px 0 0;
+    transform: none !important;
+  }
+
+  /* 禁用 hover 的 3D 旋转效果（移动端 hover 会卡住） */
+  @media (hover: none) {
+    .weather-side:hover {
+      transform: none !important;
+    }
+    .attraction-image-wrapper:hover .attraction-image {
+      transform: none !important;
+    }
+  }
+
+  .weather-info-side {
+    padding: 12px;
+  }
+
+  .weather-temp {
+    font-size: 46px;
+  }
+
+  .weather-desc {
+    font-size: 18px;
+  }
+
+  .week-list {
+    justify-content: space-between;
+  }
+
+  .week-list > li {
+    width: calc(33.333% - 7px);
+    min-width: 72px;
+    padding: 8px 6px;
+  }
+
+  /* 预算摘要 */
   .right-budget-summary {
-    flex: auto;
+    flex: none;
     width: 100%;
   }
 
   .budget-summary-panel {
     min-height: auto;
-    padding: 14px;
+    gap: 12px;
   }
 
   .budget-summary-title {
-    font-size: 22px;
-  }
-
-  .budget-summary-currency {
-    font-size: 28px;
+    font-size: 26px;
   }
 
   .budget-summary-total-value {
-    font-size: 42px;
-  }
-
-  .budget-summary-sub-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px 8px;
+    font-size: 52px;
   }
 
   .budget-summary-sub-value {
-    font-size: 20px;
+    font-size: 22px;
   }
 
-  /* ===== 预算明细表格：改为卡片式布局 ===== */
-  .budget-toolbar {
-    gap: 8px;
-  }
-
-  .budget-detail-panel {
-    min-height: auto;
-    padding: 10px;
-  }
-
-  .budget-toolbar-item {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .budget-select {
-    flex: 1;
-    min-width: 0;
-    width: auto;
-  }
-
-  .budget-detail-header {
-    display: none !important;
-  }
-
-  .budget-detail-list {
-    overflow-x: visible;
-    border: none;
-    background: transparent;
-  }
-
-  .budget-detail-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px 10px;
-    padding: 10px 12px;
-    min-width: 0;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    margin-bottom: 8px;
-    background: rgba(0, 0, 0, 0.18);
-    border-bottom: none;
-  }
-
-  .budget-detail-row:last-child {
-    margin-bottom: 0;
-  }
-
-  .budget-detail-type {
-    font-size: 11px;
-    padding: 2px 8px;
-    border-radius: 6px;
-    background: rgba(215, 110, 66, 0.18);
-    color: #ffd5c6;
-  }
-
-  .budget-detail-day {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.5);
-  }
-
-  .budget-detail-name {
-    width: 100%;
-    white-space: normal;
-    font-size: 14px;
-    font-weight: 500;
-    order: -1;
-  }
-
-  .budget-detail-amount {
-    font-size: 16px;
-    font-weight: 700;
-    margin-left: auto;
-  }
-
-  .budget-action-wrap {
-    margin-left: auto;
-  }
-
-  /* ===== 行程概览 Swiper ===== */
   .overview-meta {
     gap: 8px;
     margin-bottom: 14px;
@@ -4246,192 +4212,118 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
     padding: 2.4rem 0 0.6rem;
   }
 
-  /* ===== 每日行程 ===== */
-  :deep(.ant-collapse-content-box) {
-    padding: 12px !important;
+  /* 预算明细 */
+  .budget-toolbar {
+    gap: 8px;
   }
 
-  :deep(.ant-collapse-header) {
-    padding: 12px 14px !important;
+  .budget-detail-panel {
+    min-height: auto;
+    padding: 14px;
   }
 
-  .day-info {
-    padding: 12px;
+  .budget-toolbar-item {
+    width: 100%;
+    justify-content: space-between;
   }
 
-  .info-row {
-    flex-direction: column;
-    gap: 4px;
+  .budget-select {
+    width: 170px;
   }
 
-  .info-row .label {
-    min-width: auto;
-    font-size: 12px;
+  .budget-detail-list {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .info-row .value {
-    font-size: 13px;
+  .budget-detail-row {
+    min-width: 560px;
   }
 
-  /* 景点列表移动端改为单列 */
-  :deep(.ant-list-items) {
-    display: flex !important;
-    flex-direction: column !important;
-  }
-
-  :deep(.ant-list .ant-col) {
-    max-width: 100% !important;
-    flex: 0 0 100% !important;
-  }
-
+  /* 景点图片高度 */
   .attraction-image {
     height: 160px;
   }
-
-  /* 酒店描述改为单列 */
-  .hotel-card :deep(.ant-descriptions-row) {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .hotel-card :deep(.ant-descriptions-item) {
-    padding: 6px 12px !important;
-  }
-
-  /* ===== 天气看板 ===== */
-  .weather-dashboard {
-    flex-direction: column;
-    height: auto;
-    min-height: auto;
-    border-radius: 16px;
-  }
-
-  .weather-side {
-    flex: 0 0 auto;
-    width: 100%;
-    min-height: 240px;
-    border-radius: 16px 16px 0 0;
-    transform: none !important;
-  }
-
-  .weather-side:hover {
-    transform: none !important;
-  }
-
-  .weather-info-side {
-    padding: 12px;
-  }
-
-  .weather-temp {
-    font-size: 40px;
-  }
-
-  .weather-desc {
-    font-size: 16px;
-  }
-
-  .date-container {
-    top: 20px;
-    left: 20px;
-    right: 20px;
-  }
-
-  .date-dayname {
-    font-size: 20px;
-  }
-
-  .weather-container {
-    left: 20px;
-    right: 20px;
-    bottom: 16px;
-  }
-
-  .weather-hero-icon {
-    font-size: 0.55em;
-    margin-bottom: -16px;
-    margin-left: -14px;
-  }
-
-  .week-list {
-    justify-content: flex-start;
-    gap: 6px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    flex-wrap: nowrap;
-    padding-bottom: 4px;
-  }
-
-  .week-list > li {
-    flex: 0 0 auto;
-    width: 76px;
-    min-width: 76px;
-    padding: 6px 4px;
-  }
-
-  .today-info-item .wea-title {
-    font-size: 13px;
-  }
-
-  .today-info-item .value {
-    font-size: 13px;
-  }
-
-  /* ===== 地图卡片 ===== */
-  .map-card {
-    min-height: 350px;
-  }
-
-  /* ===== 知识图谱 ===== */
-  #kg-chart-container {
-    height: 400px !important;
-  }
-
-  .kg-legend {
-    gap: 10px;
-    padding: 10px 12px;
-  }
-
-  .kg-legend-item {
-    font-size: 11px;
-  }
-
-  /* ===== 回到顶部 ===== */
-  .back-top-button {
-    width: 40px;
-    height: 40px;
-    font-size: 11px;
-  }
 }
 
-/* 超小屏幕额外适配（<= 375px） */
-@media (max-width: 375px) {
+/* 小屏手机（480px 及以下）专属适配 */
+@media (max-width: 480px) {
   .result-main {
-    padding: 56px 4px 16px;
+    padding: 56px 8px 20px;
   }
 
   .content-wrapper {
-    padding: 8px;
-    border-radius: 10px;
+    padding: 10px;
+    border-radius: 12px;
+  }
+
+  /* 顶部导航：操作按钮只保留图标或极简文字 */
+  .top-switch-actions {
+    max-width: 40%;
+  }
+
+  .top-switch-actions :deep(.ant-btn-default),
+  .top-switch-actions :deep(.ant-btn-primary) {
+    height: 30px !important;
+    padding: 0 8px !important;
+    font-size: 10px !important;
+  }
+
+  /* 预算摘要数字再缩 */
+  .budget-summary-title {
+    font-size: 22px;
   }
 
   .budget-summary-total-value {
-    font-size: 34px;
-  }
-
-  .budget-summary-currency {
-    font-size: 22px;
+    font-size: 42px;
   }
 
   .budget-summary-sub-value {
     font-size: 18px;
   }
 
-  .weather-side {
-    min-height: 200px;
+  /* 天气温度 */
+  .weather-temp {
+    font-size: 38px;
   }
 
-  .weather-temp {
-    font-size: 34px;
+  .date-dayname {
+    font-size: 20px;
+  }
+
+  /* 周天气：小屏 2 列 */
+  .week-list > li {
+    width: calc(50% - 5px);
+    min-width: 0;
+  }
+
+  /* 景点卡片：图片压低，标题截断 */
+  .attraction-image {
+    height: 130px;
+  }
+
+  /* 行程概览 swiper */
+  .overview-swiper .swiper-wrapper {
+    min-height: 22rem;
+  }
+
+  /* 概览卡片内边距 */
+  .overview-swiper {
+    padding: 4px 0 8px;
+  }
+
+  /* 预算明细最小宽再收窄（仍可横滚） */
+  .budget-detail-row {
+    min-width: 480px;
+    padding: 9px 10px;
+    font-size: 12px;
+  }
+
+  .budget-detail-type,
+  .budget-detail-day,
+  .budget-detail-name,
+  .budget-detail-amount {
+    font-size: 12px;
   }
 }
 

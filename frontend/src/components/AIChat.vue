@@ -1,5 +1,6 @@
 <template>
-  <div class="ai-chat-floating">
+  <!-- 桌面端：原3D动效浮动按钮 -->
+  <div v-if="!isMobile" class="ai-chat-floating">
     <div class="container-ai-input">
       <div v-for="index in 15" :key="`chat-area-${index}`" class="area"></div>
       <div class="container-wrap" :class="{ open: chatOpen }">
@@ -80,50 +81,18 @@
               <div class="options">
                 <div class="btns-add">
                   <button type="button" disabled>
-                    <svg
-                      viewBox="0 0 24 24"
-                      height="20"
-                      width="20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M7 8v8a5 5 0 1 0 10 0V6.5a3.5 3.5 0 1 0-7 0V15a2 2 0 0 0 4 0V8"
-                        stroke-width="2"
-                        stroke-linejoin="round"
-                        stroke-linecap="round"
-                        stroke="currentColor"
-                        fill="none"
-                      ></path>
+                    <svg viewBox="0 0 24 24" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M7 8v8a5 5 0 1 0 10 0V6.5a3.5 3.5 0 1 0-7 0V15a2 2 0 0 0 4 0V8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" fill="none"></path>
                     </svg>
                   </button>
                   <button type="button" disabled>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zm0 10a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zm10 0a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1zm0-8h6m-3-3v6"
-                      ></path>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                      <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zm0 10a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zm10 0a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1zm0-8h6m-3-3v6"></path>
                     </svg>
                   </button>
                   <button type="button" disabled>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        fill="currentColor"
-                        d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10s-4.477 10-10 10m-2.29-2.333A17.9 17.9 0 0 1 8.027 13H4.062a8.01 8.01 0 0 0 5.648 6.667M10.03 13c.151 2.439.848 4.73 1.97 6.752A15.9 15.9 0 0 0 13.97 13zm9.908 0h-3.965a17.9 17.9 0 0 1-1.683 6.667A8.01 8.01 0 0 0 19.938 13M4.062 11h3.965A17.9 17.9 0 0 1 9.71 4.333A8.01 8.01 0 0 0 4.062 11m5.969 0h3.938A15.9 15.9 0 0 0 12 4.248A15.9 15.9 0 0 0 10.03 11m4.259-6.667A17.9 17.9 0 0 1 15.973 11h3.965a8.01 8.01 0 0 0-5.648-6.667"
-                      ></path>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                      <path fill="currentColor" d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10s-4.477 10-10 10m-2.29-2.333A17.9 17.9 0 0 1 8.027 13H4.062a8.01 8.01 0 0 0 5.648 6.667M10.03 13c.151 2.439.848 4.73 1.97 6.752A15.9 15.9 0 0 0 13.97 13zm9.908 0h-3.965a17.9 17.9 0 0 1-1.683 6.667A8.01 8.01 0 0 0 19.938 13M4.062 11h3.965A17.9 17.9 0 0 1 9.71 4.333A8.01 8.01 0 0 0 4.062 11m5.969 0h3.938A15.9 15.9 0 0 0 12 4.248A15.9 15.9 0 0 0 10.03 11m4.259-6.667A17.9 17.9 0 0 1 15.973 11h3.965a8.01 8.01 0 0 0-5.648-6.667"></path>
                     </svg>
                   </button>
                 </div>
@@ -135,10 +104,7 @@
                 >
                   <i>
                     <svg viewBox="0 0 512 512">
-                      <path
-                        d="M473 39.05a24 24 0 0 0-25.5-5.46L47.47 185h-.08a24 24 0 0 0 1 45.16l.41.13l137.3 58.63a16 16 0 0 0 15.54-3.59L422 80a7.07 7.07 0 0 1 10 10L226.66 310.26a16 16 0 0 0-3.59 15.54l58.65 137.38c.06.2.12.38.19.57c3.2 9.27 11.3 15.81 21.09 16.25h1a24.63 24.63 0 0 0 23-15.46L478.39 64.62A24 24 0 0 0 473 39.05"
-                        fill="currentColor"
-                      ></path>
+                      <path d="M473 39.05a24 24 0 0 0-25.5-5.46L47.47 185h-.08a24 24 0 0 0 1 45.16l.41.13l137.3 58.63a16 16 0 0 0 15.54-3.59L422 80a7.07 7.07 0 0 1 10 10L226.66 310.26a16 16 0 0 0-3.59 15.54l58.65 137.38c.06.2.12.38.19.57c3.2 9.27 11.3 15.81 21.09 16.25h1a24.63 24.63 0 0 0 23-15.46L478.39 64.62A24 24 0 0 0 473 39.05" fill="currentColor"></path>
                     </svg>
                   </i>
                 </button>
@@ -149,10 +115,97 @@
       </div>
     </div>
   </div>
+
+  <!-- 移动端：独立的底部浮动按钮 + 全屏对话框 -->
+  <div v-else class="mobile-chat-root">
+    <!-- 折叠态：圆形浮动按钮 -->
+    <button
+      v-if="!chatOpen"
+      class="mobile-chat-fab"
+      @click="openChatPanel"
+      :aria-label="t('result.chat.placeholder')"
+    >
+      <svg fill="none" viewBox="0 0 24 24" width="26" height="26">
+        <path fill="currentColor" d="M8.28386 16.2843C8.9917 15.7665 9.8765 14.731 12 14.731C14.1235 14.731 15.0083 15.7665 15.7161 16.2843C17.8397 17.8376 18.7542 16.4845 18.9014 15.7665C19.4323 13.1777 17.6627 11.1066 17.3088 10.5888C16.3844 9.23666 14.1235 8 12 8C9.87648 8 7.61556 9.23666 6.69122 10.5888C6.33728 11.1066 4.56771 13.1777 5.09858 15.7665C5.24582 16.4845 6.16034 17.8376 8.28386 16.2843Z"></path>
+        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.4"/>
+      </svg>
+    </button>
+
+    <!-- 展开态：全屏遮罩 + 底部抽屉 -->
+    <div v-if="chatOpen" class="mobile-chat-overlay" @click.self="closeChatPanel">
+      <div class="mobile-chat-panel">
+        <!-- 顶部标题栏 -->
+        <div class="mobile-chat-header">
+          <div class="mobile-chat-title">
+            <svg fill="none" viewBox="0 0 24 24" width="18" height="18" style="margin-right:6px;flex-shrink:0">
+              <path fill="currentColor" d="M8.28386 16.2843C8.9917 15.7665 9.8765 14.731 12 14.731C14.1235 14.731 15.0083 15.7665 15.7161 16.2843C17.8397 17.8376 18.7542 16.4845 18.9014 15.7665C19.4323 13.1777 17.6627 11.1066 17.3088 10.5888C16.3844 9.23666 14.1235 8 12 8C9.87648 8 7.61556 9.23666 6.69122 10.5888C6.33728 11.1066 4.56771 13.1777 5.09858 15.7665C5.24582 16.4845 6.16034 17.8376 8.28386 16.2843Z"></path>
+            </svg>
+            旅途星辰 AI
+          </div>
+          <button class="mobile-chat-close" @click="closeChatPanel">×</button>
+        </div>
+
+        <!-- 消息列表 -->
+        <div class="mobile-chat-history" ref="chatMessagesRef">
+          <div v-if="chatHistory.length === 0" class="mobile-chat-empty">
+            <p>{{ t('result.chat.welcome') }}</p>
+            <div class="mobile-chat-suggestions">
+              <button
+                v-for="question in quickQuestions"
+                :key="question.labelKey"
+                type="button"
+                class="mobile-chat-suggestion"
+                :disabled="chatLoading || !tripPlan"
+                @click="sendQuickQuestion(t(question.questionKey))"
+              >
+                {{ t(question.labelKey) }}
+              </button>
+            </div>
+          </div>
+          <div
+            v-for="(msg, idx) in chatHistory"
+            :key="`mchat-${idx}`"
+            class="mobile-chat-msg"
+            :class="msg.role"
+          >
+            {{ msg.content }}
+          </div>
+          <div v-if="chatLoading" class="mobile-chat-msg assistant mobile-typing">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
+
+        <!-- 输入区 -->
+        <div class="mobile-chat-input-bar">
+          <textarea
+            v-model="chatInput"
+            :placeholder="chatPlaceholder"
+            :disabled="chatLoading || !tripPlan"
+            rows="1"
+            class="mobile-chat-textarea"
+            @keydown.enter.exact.prevent="sendChatMessage"
+            @input="autoGrowTextarea"
+          ></textarea>
+          <button
+            type="button"
+            class="mobile-chat-send"
+            :disabled="chatLoading || !chatInput.trim() || !tripPlan"
+            @click="sendChatMessage"
+          >
+            <svg viewBox="0 0 512 512" width="20" height="20">
+              <path d="M473 39.05a24 24 0 0 0-25.5-5.46L47.47 185h-.08a24 24 0 0 0 1 45.16l.41.13l137.3 58.63a16 16 0 0 0 15.54-3.59L422 80a7.07 7.07 0 0 1 10 10L226.66 310.26a16 16 0 0 0-3.59 15.54l58.65 137.38c.06.2.12.38.19.57c3.2 9.27 11.3 15.81 21.09 16.25h1a24.63 24.63 0 0 0 23-15.46L478.39 64.62A24 24 0 0 0 473 39.05" fill="currentColor"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import axios from 'axios'
 import type { ChatMessage, TripPlan } from '@/types'
@@ -162,12 +215,23 @@ const props = defineProps<{
   tripPlan: TripPlan | null
 }>()
 
+const emit = defineEmits<{
+  'update-trip': [trip: TripPlan]
+}>()
+
 const { t } = useI18n()
 const chatOpen = ref(false)
 const chatInput = ref('')
 const chatHistory = ref<ChatMessage[]>([])
 const chatLoading = ref(false)
 const chatMessagesRef = ref<HTMLElement | null>(null)
+
+// 移动端判断
+const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1200)
+const isMobile = computed(() => windowWidth.value <= 768)
+const onResize = () => { windowWidth.value = window.innerWidth }
+onMounted(() => { if (typeof window !== 'undefined') window.addEventListener('resize', onResize) })
+onUnmounted(() => { if (typeof window !== 'undefined') window.removeEventListener('resize', onResize) })
 
 const quickQuestions = [
   {
@@ -199,12 +263,14 @@ const scrollChatToBottom = () => {
 
 watch(chatOpen, (open) => {
   if (open) scrollChatToBottom()
+  // 移动端展开时禁止背景滚动
+  if (typeof document !== 'undefined') {
+    document.body.style.overflow = open && isMobile.value ? 'hidden' : ''
+  }
 })
 
 const openChatPanel = () => {
-  if (!chatOpen.value) {
-    chatOpen.value = true
-  }
+  if (!chatOpen.value) chatOpen.value = true
 }
 
 const closeChatPanel = () => {
@@ -214,6 +280,13 @@ const closeChatPanel = () => {
 const sendQuickQuestion = (q: string) => {
   chatInput.value = q
   void sendChatMessage()
+}
+
+// 移动端 textarea 自动增高
+const autoGrowTextarea = (e: Event) => {
+  const el = e.target as HTMLTextAreaElement
+  el.style.height = 'auto'
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px'
 }
 
 const sendChatMessage = async () => {
@@ -235,6 +308,9 @@ const sendChatMessage = async () => {
 
     if (res.data.success) {
       chatHistory.value.push({ role: 'assistant', content: res.data.reply })
+      if (res.data.updated_trip) {
+        emit('update-trip', res.data.updated_trip as TripPlan)
+      }
     } else {
       chatHistory.value.push({ role: 'assistant', content: t('result.chat.replyFallback') })
     }
@@ -249,6 +325,7 @@ const sendChatMessage = async () => {
 </script>
 
 <style scoped lang="scss">
+/* ============ 桌面端：原3D动效样式（完全保留） ============ */
 .ai-chat-floating {
   position: fixed;
   left: 8px;
@@ -330,7 +407,6 @@ const sendChatMessage = async () => {
 .card {
   width: 100%;
   height: 100%;
-  /* background-color: #fff; */
   position: relative;
   transform-style: preserve-3d;
   will-change: transform;
@@ -485,8 +561,6 @@ const sendChatMessage = async () => {
   height: 62px;
   border: none;
   border-radius: 50%;
-//   background: rgba(0, 0, 0, 0.12);
-//   color: rgba(255, 255, 255, 0.92);
   font-size: 50px;
   line-height: 1;
   cursor: pointer;
@@ -563,7 +637,6 @@ const sendChatMessage = async () => {
   color: #ffffff;
   opacity: 1;
   filter: alpha(opacity=100);
-//   background: linear-gradient(135deg, #ff4141, #9147ff, #3b82f6);
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -593,8 +666,6 @@ const sendChatMessage = async () => {
   color: #ffffff;
   opacity: 1;
   filter: alpha(opacity=100);
-
-//   background: linear-gradient(135deg, #ff4141, #9147ff);
 }
 
 .card .chat .chat-bot .chat-msg.assistant {
@@ -612,7 +683,6 @@ const sendChatMessage = async () => {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-//   background: #9147ff;
   background-color: #f5593d;
   border-color: #f5593d;
   color: #ffffff;
@@ -710,14 +780,12 @@ const sendChatMessage = async () => {
   color: #ffffff;
   opacity: 1;
   filter: alpha(opacity=100);
-//   background-image: linear-gradient(to top, #ff4141, #9147ff, #3b82f6);
   border-radius: 10px;
   box-shadow: inset 0 6px 2px -4px rgba(255, 255, 255, 0.5);
   cursor: pointer;
   border: none;
   outline: none;
   opacity: 0.7;
-//   transform: translateY(-100%);
   transition: all 0.15s ease;
 
   & i {
@@ -756,421 +824,411 @@ const sendChatMessage = async () => {
   cursor: not-allowed;
 }
 
-@keyframes aiChatDotPulse {
-  0%, 80%, 100% {
-    transform: scale(0.4);
-    opacity: 0.4;
-  }
-  40% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
+/* 3D tilt 区域（桌面端 15 个区域） */
 .area:nth-child(15):hover ~ .container-wrap .card,
 .area:nth-child(15):hover ~ .container-wrap .eyes .eye {
-  transform: perspective(var(--perspective)) rotateX(-15deg) rotateY(15deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+  transform: perspective(var(--perspective)) rotateX(-15deg) rotateY(15deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
 .area:nth-child(14):hover ~ .container-wrap .card,
 .area:nth-child(14):hover ~ .container-wrap .eyes .eye {
-  transform: perspective(var(--perspective)) rotateX(-15deg) rotateY(7deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+  transform: perspective(var(--perspective)) rotateX(-15deg) rotateY(7deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
 .area:nth-child(13):hover ~ .container-wrap .card,
 .area:nth-child(13):hover ~ .container-wrap .eyes .eye {
-  transform: perspective(var(--perspective)) rotateX(-15deg) rotateY(0)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+  transform: perspective(var(--perspective)) rotateX(-15deg) rotateY(0) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
 .area:nth-child(12):hover ~ .container-wrap .card,
 .area:nth-child(12):hover ~ .container-wrap .eyes .eye {
-  transform: perspective(var(--perspective)) rotateX(-15deg) rotateY(-7deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+  transform: perspective(var(--perspective)) rotateX(-15deg) rotateY(-7deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
 .area:nth-child(11):hover ~ .container-wrap .card,
 .area:nth-child(11):hover ~ .container-wrap .eyes .eye {
-  transform: perspective(var(--perspective)) rotateX(-15deg) rotateY(-15deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+  transform: perspective(var(--perspective)) rotateX(-15deg) rotateY(-15deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
-
 .area:nth-child(10):hover ~ .container-wrap .card,
 .area:nth-child(10):hover ~ .container-wrap .eyes .eye {
-  transform: perspective(var(--perspective)) rotateX(0) rotateY(15deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+  transform: perspective(var(--perspective)) rotateX(0) rotateY(15deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
 .area:nth-child(9):hover ~ .container-wrap .card,
 .area:nth-child(9):hover ~ .container-wrap .eyes .eye {
-  transform: perspective(var(--perspective)) rotateX(0) rotateY(7deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+  transform: perspective(var(--perspective)) rotateX(0) rotateY(7deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
 .area:nth-child(8):hover ~ .container-wrap .card,
 .area:nth-child(8):hover ~ .container-wrap .eyes .eye {
-  transform: perspective(var(--perspective)) rotateX(0) rotateY(0)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+  transform: perspective(var(--perspective)) rotateX(0) rotateY(0) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
 .area:nth-child(7):hover ~ .container-wrap .card,
 .area:nth-child(7):hover ~ .container-wrap .eyes .eye {
-  transform: perspective(var(--perspective)) rotateX(0) rotateY(-7deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+  transform: perspective(var(--perspective)) rotateX(0) rotateY(-7deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
 .area:nth-child(6):hover ~ .container-wrap .card,
 .area:nth-child(6):hover ~ .container-wrap .eyes .eye {
-  transform: perspective(var(--perspective)) rotateX(0) rotateY(-15deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+  transform: perspective(var(--perspective)) rotateX(0) rotateY(-15deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
-
 .area:nth-child(5):hover ~ .container-wrap .card,
 .area:nth-child(5):hover ~ .container-wrap .eyes .eye {
-  transform: perspective(var(--perspective)) rotateX(15deg) rotateY(15deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+  transform: perspective(var(--perspective)) rotateX(15deg) rotateY(15deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
 .area:nth-child(4):hover ~ .container-wrap .card,
 .area:nth-child(4):hover ~ .container-wrap .eyes .eye {
-  transform: perspective(var(--perspective)) rotateX(15deg) rotateY(7deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+  transform: perspective(var(--perspective)) rotateX(15deg) rotateY(7deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
 .area:nth-child(3):hover ~ .container-wrap .card,
 .area:nth-child(3):hover ~ .container-wrap .eyes .eye {
-  transform: perspective(var(--perspective)) rotateX(15deg) rotateY(0)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+  transform: perspective(var(--perspective)) rotateX(15deg) rotateY(0) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
 .area:nth-child(2):hover ~ .container-wrap .card,
 .area:nth-child(2):hover ~ .container-wrap .eyes .eye {
-  transform: perspective(var(--perspective)) rotateX(15deg) rotateY(-7deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+  transform: perspective(var(--perspective)) rotateX(15deg) rotateY(-7deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
 .area:nth-child(1):hover ~ .container-wrap .card,
 .area:nth-child(1):hover ~ .container-wrap .eyes .eye {
-  transform: perspective(var(--perspective)) rotateX(15deg) rotateY(-15deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+  transform: perspective(var(--perspective)) rotateX(15deg) rotateY(-15deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
 
-.area:nth-child(15):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .options
-  button,
-.area:nth-child(15):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .chat-bot {
-  transform: perspective(var(--perspective)) rotateX(-10deg) rotateY(8deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+.area:nth-child(15):hover ~ .container-wrap .card .container-ai-chat .chat .options button,
+.area:nth-child(15):hover ~ .container-wrap .card .container-ai-chat .chat .chat-bot {
+  transform: perspective(var(--perspective)) rotateX(-10deg) rotateY(8deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
-
-.area:nth-child(14):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .options
-  button,
-.area:nth-child(14):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .chat-bot {
-  transform: perspective(var(--perspective)) rotateX(-10deg) rotateY(4deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+.area:nth-child(14):hover ~ .container-wrap .card .container-ai-chat .chat .options button,
+.area:nth-child(14):hover ~ .container-wrap .card .container-ai-chat .chat .chat-bot {
+  transform: perspective(var(--perspective)) rotateX(-10deg) rotateY(4deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
-
-.area:nth-child(13):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .options
-  button,
-.area:nth-child(13):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .chat-bot {
-  transform: perspective(var(--perspective)) rotateX(-10deg) rotateY(0deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+.area:nth-child(13):hover ~ .container-wrap .card .container-ai-chat .chat .options button,
+.area:nth-child(13):hover ~ .container-wrap .card .container-ai-chat .chat .chat-bot {
+  transform: perspective(var(--perspective)) rotateX(-10deg) rotateY(0deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
-
-.area:nth-child(12):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .options
-  button,
-.area:nth-child(12):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .chat-bot {
-  transform: perspective(var(--perspective)) rotateX(-10deg) rotateY(-4deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+.area:nth-child(12):hover ~ .container-wrap .card .container-ai-chat .chat .options button,
+.area:nth-child(12):hover ~ .container-wrap .card .container-ai-chat .chat .chat-bot {
+  transform: perspective(var(--perspective)) rotateX(-10deg) rotateY(-4deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
-
-.area:nth-child(11):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .options
-  button,
-.area:nth-child(11):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .chat-bot {
-  transform: perspective(var(--perspective)) rotateX(-10deg) rotateY(-8deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+.area:nth-child(11):hover ~ .container-wrap .card .container-ai-chat .chat .options button,
+.area:nth-child(11):hover ~ .container-wrap .card .container-ai-chat .chat .chat-bot {
+  transform: perspective(var(--perspective)) rotateX(-10deg) rotateY(-8deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
-
-.area:nth-child(10):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .options
-  button,
-.area:nth-child(10):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .chat-bot {
-  transform: perspective(var(--perspective)) rotateX(0deg) rotateY(8deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+.area:nth-child(10):hover ~ .container-wrap .card .container-ai-chat .chat .options button,
+.area:nth-child(10):hover ~ .container-wrap .card .container-ai-chat .chat .chat-bot {
+  transform: perspective(var(--perspective)) rotateX(0deg) rotateY(8deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
-
-.area:nth-child(9):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .options
-  button,
-.area:nth-child(9):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .chat-bot {
-  transform: perspective(var(--perspective)) rotateX(0deg) rotateY(4deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+.area:nth-child(9):hover ~ .container-wrap .card .container-ai-chat .chat .options button,
+.area:nth-child(9):hover ~ .container-wrap .card .container-ai-chat .chat .chat-bot {
+  transform: perspective(var(--perspective)) rotateX(0deg) rotateY(4deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
-
-.area:nth-child(8):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .options
-  button,
-.area:nth-child(8):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .chat-bot {
-  transform: perspective(var(--perspective)) rotateX(0deg) rotateY(0deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+.area:nth-child(8):hover ~ .container-wrap .card .container-ai-chat .chat .options button,
+.area:nth-child(8):hover ~ .container-wrap .card .container-ai-chat .chat .chat-bot {
+  transform: perspective(var(--perspective)) rotateX(0deg) rotateY(0deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
-
-.area:nth-child(7):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .options
-  button,
-.area:nth-child(7):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .chat-bot {
-  transform: perspective(var(--perspective)) rotateX(0deg) rotateY(-4deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+.area:nth-child(7):hover ~ .container-wrap .card .container-ai-chat .chat .options button,
+.area:nth-child(7):hover ~ .container-wrap .card .container-ai-chat .chat .chat-bot {
+  transform: perspective(var(--perspective)) rotateX(0deg) rotateY(-4deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
-
-.area:nth-child(6):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .options
-  button,
-.area:nth-child(6):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .chat-bot {
-  transform: perspective(var(--perspective)) rotateX(0deg) rotateY(-8deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+.area:nth-child(6):hover ~ .container-wrap .card .container-ai-chat .chat .options button,
+.area:nth-child(6):hover ~ .container-wrap .card .container-ai-chat .chat .chat-bot {
+  transform: perspective(var(--perspective)) rotateX(0deg) rotateY(-8deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
-
-.area:nth-child(5):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .options
-  button,
-.area:nth-child(5):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .chat-bot {
-  transform: perspective(var(--perspective)) rotateX(10deg) rotateY(8deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+.area:nth-child(5):hover ~ .container-wrap .card .container-ai-chat .chat .options button,
+.area:nth-child(5):hover ~ .container-wrap .card .container-ai-chat .chat .chat-bot {
+  transform: perspective(var(--perspective)) rotateX(10deg) rotateY(8deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
-
-.area:nth-child(4):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .options
-  button,
-.area:nth-child(4):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .chat-bot {
-  transform: perspective(var(--perspective)) rotateX(10deg) rotateY(4deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+.area:nth-child(4):hover ~ .container-wrap .card .container-ai-chat .chat .options button,
+.area:nth-child(4):hover ~ .container-wrap .card .container-ai-chat .chat .chat-bot {
+  transform: perspective(var(--perspective)) rotateX(10deg) rotateY(4deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
-
-.area:nth-child(3):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .options
-  button,
-.area:nth-child(3):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .chat-bot {
-  transform: perspective(var(--perspective)) rotateX(10deg) rotateY(0deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+.area:nth-child(3):hover ~ .container-wrap .card .container-ai-chat .chat .options button,
+.area:nth-child(3):hover ~ .container-wrap .card .container-ai-chat .chat .chat-bot {
+  transform: perspective(var(--perspective)) rotateX(10deg) rotateY(0deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
-
-.area:nth-child(2):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .options
-  button,
-.area:nth-child(2):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .chat-bot {
-  transform: perspective(var(--perspective)) rotateX(10deg) rotateY(-4deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+.area:nth-child(2):hover ~ .container-wrap .card .container-ai-chat .chat .options button,
+.area:nth-child(2):hover ~ .container-wrap .card .container-ai-chat .chat .chat-bot {
+  transform: perspective(var(--perspective)) rotateX(10deg) rotateY(-4deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
-
-.area:nth-child(1):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .options
-  button,
-.area:nth-child(1):hover
-  ~ .container-wrap
-  .card
-  .container-ai-chat
-  .chat
-  .chat-bot {
-  transform: perspective(var(--perspective)) rotateX(10deg) rotateY(-8deg)
-    translateZ(var(--translateY)) scale3d(1, 1, 1);
+.area:nth-child(1):hover ~ .container-wrap .card .container-ai-chat .chat .options button,
+.area:nth-child(1):hover ~ .container-wrap .card .container-ai-chat .chat .chat-bot {
+  transform: perspective(var(--perspective)) rotateX(10deg) rotateY(-8deg) translateZ(var(--translateY)) scale3d(1, 1, 1);
 }
 
 @keyframes rotate-background-balls {
-  from {
-    transform: translateX(-50%) translateY(-50%) rotate(360deg);
-  }
-  to {
-    transform: translateX(-50%) translateY(-50%) rotate(0);
-  }
+  from { transform: translateX(-50%) translateY(-50%) rotate(360deg); }
+  to   { transform: translateX(-50%) translateY(-50%) rotate(0); }
 }
 
 @keyframes animate-eyes {
-  46% {
-    height: 52px;
-  }
-  48% {
-    height: 20px;
-  }
-  50% {
-    height: 52px;
-  }
-  96% {
-    height: 52px;
-  }
-  98% {
-    height: 20px;
-  }
-  100% {
-    height: 52px;
+  46% { height: 52px; }
+  48% { height: 20px; }
+  50% { height: 52px; }
+  96% { height: 52px; }
+  98% { height: 20px; }
+  100% { height: 52px; }
+}
+
+@keyframes aiChatDotPulse {
+  0%, 80%, 100% { transform: scale(0.4); opacity: 0.4; }
+  40%           { transform: scale(1);   opacity: 1;   }
+}
+
+
+/* ============ 移动端：独立底部抽屉样式 ============ */
+
+/* 移动端根容器：不占任何空间 */
+.mobile-chat-root {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+
+  /* 子元素恢复事件 */
+  & > * {
+    pointer-events: auto;
   }
 }
 
-@media (max-width: 768px) {
-  .ai-chat-floating {
-    left: 4px;
-    bottom: 4px;
-    transform: scale(0.25);
+/* 悬浮圆形按钮 */
+.mobile-chat-fab {
+  position: fixed;
+  right: 16px;
+  bottom: 24px;
+  z-index: 1000;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f5593d 0%, #d76e42 100%);
+  border: none;
+  box-shadow: 0 4px 16px rgba(215, 110, 66, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:active {
+    transform: scale(0.92);
+    box-shadow: 0 2px 8px rgba(215, 110, 66, 0.35);
+  }
+}
+
+/* 全屏遮罩 */
+.mobile-chat-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  animation: overlayFadeIn 0.2s ease;
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* 底部抽屉面板 */
+.mobile-chat-panel {
+  width: 100%;
+  max-height: 82vh;
+  background: #ffffff;
+  border-radius: 20px 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: panelSlideUp 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@keyframes panelSlideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+/* 顶部标题栏 */
+.mobile-chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+}
+
+.mobile-chat-title {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.mobile-chat-close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 50%;
+  font-size: 20px;
+  line-height: 1;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 消息列表 */
+.mobile-chat-history {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-chat-empty {
+  color: #8b8b8b;
+
+  p {
+    margin: 0 0 12px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+}
+
+.mobile-chat-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mobile-chat-suggestion {
+  border: 1px solid rgba(245, 89, 61, 0.35);
+  border-radius: 20px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  background: rgba(245, 89, 61, 0.06);
+  color: #f5593d;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:active {
+    background: rgba(245, 89, 61, 0.14);
   }
 
-  .container-wrap.open .content-card {
-    width: calc(100vw / 0.25 - 80px);
-    height: calc(85vh / 0.25);
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.mobile-chat-msg {
+  max-width: 85%;
+  font-size: 14px;
+  line-height: 1.6;
+  border-radius: 16px;
+  padding: 10px 14px;
+  word-break: break-word;
+  white-space: pre-wrap;
+
+  &.user {
+    margin-left: auto;
+    background: #f5593d;
+    color: #fff;
+    border-bottom-right-radius: 4px;
   }
 
-  .container-ai-chat {
-    padding: 24px !important;
+  &.assistant {
+    margin-right: auto;
+    background: #f3f6fd;
+    color: #2c2c2c;
+    border-bottom-left-radius: 4px;
+  }
+}
+
+.mobile-typing {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 16px;
+  width: fit-content;
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #f5593d;
+    animation: aiChatDotPulse 1.4s infinite ease-in-out both;
+
+    &:nth-child(2) { animation-delay: 0.16s; }
+    &:nth-child(3) { animation-delay: 0.32s; }
+  }
+}
+
+/* 输入区 */
+.mobile-chat-input-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 10px 12px 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background: #fff;
+  flex-shrink: 0;
+  /* 兼容 iOS 底部安全区 */
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+}
+
+.mobile-chat-textarea {
+  flex: 1;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 20px;
+  padding: 9px 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+  background: #f7f7f7;
+  color: #1a1a1a;
+  max-height: 120px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+  &::placeholder {
+    color: #b0b0b0;
   }
 
-  .container-ai-chat .chat-close-btn {
-    top: 12px;
-    right: 12px;
+  &:focus {
+    border-color: rgba(245, 89, 61, 0.5);
+    background: #fff;
   }
 
-  .container-wrap .card .chat {
-    padding: 80px 12px 12px;
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+.mobile-chat-send {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f5593d;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
   }
 
-  .card .chat .chat-bot .chat-history {
-    padding: 16px;
-  }
-
-  .container-wrap:after {
-    width: 6.5rem;
-    height: 6rem;
-  }
-
-  .container-wrap:hover:after {
-    height: 6.5rem;
-  }
-
-  .content-card {
-    width: 6.5rem;
-    height: 6.5rem;
+  &:active:not(:disabled) {
+    transform: scale(0.9);
   }
 }
 </style>
