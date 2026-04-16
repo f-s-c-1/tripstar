@@ -6,7 +6,7 @@
 
     <main class="result-main">
       <div v-if="tripPlan" class="content-wrapper">
-        <div class="top-switch-nav">
+        <div class="top-switch-nav" :class="{ 'top-switch-nav--mobile': isMobile }">
           <div class="top-switch-menu-wrap">
             <a-menu class="top-switch-menu" mode="horizontal" :selected-keys="[activeSection]" @click="scrollToSection">
               <a-menu-item key="overview">
@@ -31,33 +31,66 @@
           </div>
 
           <div class="top-switch-actions">
-            <a-space size="middle" wrap>
-              <a-button v-if="!editMode" @click="toggleEditMode" type="default">
-                {{ t('result.editTrip') }}
-              </a-button>
-              <a-button v-else @click="saveChanges" type="primary">
-                {{ t('result.saveChanges') }}
-              </a-button>
-              <a-button v-if="editMode" @click="cancelEdit" type="default">
-                {{ t('result.cancelEdit') }}
-              </a-button>
-
-              <a-dropdown v-if="!editMode">
-                <template #overlay>
-                  <a-menu>
-                    <a-menu-item key="image" @click="exportAsImage">
-                      {{ t('result.exportImage') }}
-                    </a-menu-item>
-                    <a-menu-item key="pdf" @click="exportAsPDF">
-                      {{ t('result.exportPdf') }}
-                    </a-menu-item>
-                  </a-menu>
-                </template>
-                <a-button type="default">
-                  {{ t('result.exportTrip') }} <DownOutlined />
+            <!-- 桌面端：完整按钮组 -->
+            <template v-if="!isMobile">
+              <a-space size="middle" wrap>
+                <a-button v-if="!editMode" @click="toggleEditMode" type="default">
+                  {{ t('result.editTrip') }}
                 </a-button>
-              </a-dropdown>
-            </a-space>
+                <a-button v-else @click="saveChanges" type="primary">
+                  {{ t('result.saveChanges') }}
+                </a-button>
+                <a-button v-if="editMode" @click="cancelEdit" type="default">
+                  {{ t('result.cancelEdit') }}
+                </a-button>
+                <a-dropdown v-if="!editMode">
+                  <template #overlay>
+                    <a-menu>
+                      <a-menu-item key="image" @click="exportAsImage">
+                        {{ t('result.exportImage') }}
+                      </a-menu-item>
+                      <a-menu-item key="pdf" @click="exportAsPDF">
+                        {{ t('result.exportPdf') }}
+                      </a-menu-item>
+                    </a-menu>
+                  </template>
+                  <a-button type="default">
+                    {{ t('result.exportTrip') }} <DownOutlined />
+                  </a-button>
+                </a-dropdown>
+              </a-space>
+            </template>
+            <!-- 移动端：精简按钮，合并在菜单行右侧 -->
+            <template v-else>
+              <a-space :size="6">
+                <a-button v-if="!editMode" @click="toggleEditMode" type="default" class="mobile-action-btn">
+                  {{ t('result.editTrip') }}
+                </a-button>
+                <template v-else>
+                  <a-button @click="saveChanges" type="primary" class="mobile-action-btn">
+                    {{ t('result.saveChanges') }}
+                  </a-button>
+                  <a-button @click="cancelEdit" type="default" class="mobile-action-btn">
+                    {{ t('result.cancelEdit') }}
+                  </a-button>
+                </template>
+                <a-dropdown v-if="!editMode">
+                  <template #overlay>
+                    <a-menu>
+                      <a-menu-item key="image" @click="exportAsImage">
+                        {{ t('result.exportImage') }}
+                      </a-menu-item>
+                      <a-menu-item key="pdf" @click="exportAsPDF">
+                        {{ t('result.exportPdf') }}
+                      </a-menu-item>
+                    </a-menu>
+                  </template>
+                  <a-button type="default" class="mobile-action-btn">
+                    {{ t('result.exportTrip') }} <DownOutlined />
+                  </a-button>
+                </a-dropdown>
+              </a-space>
+            </template>
           </div>
         </div>
 
@@ -68,34 +101,75 @@
           :bordered="false"
           class="overview-card section-shellless"
         >
-          <div v-if="overviewAttractions.length > 0" ref="overviewSwiperContainerRef" class="overview-swiper">
-            <div class="swiper">
-              <div class="swiper-wrapper">
-                <OverviewAttractionCard
-                  v-for="(item, index) in overviewAttractions"
-                  :key="`${item.dayArrayIndex}-${item.order}-${item.name}`"
-                  :item="item"
-                  :image-src="getAttractionImage(item.name, index)"
-                  :active="activeOverviewCard === index"
-                  @hover="setActiveOverviewCard(index)"
-                  @image-error="handleImageError"
-                  @select-day="goToDayFromOverview"
-                />
+          <!-- 桌面端：原 swiper 3D 卡片 -->
+          <template v-if="!isMobile">
+            <div v-if="overviewAttractions.length > 0" ref="overviewSwiperContainerRef" class="overview-swiper">
+              <div class="swiper">
+                <div class="swiper-wrapper">
+                  <OverviewAttractionCard
+                    v-for="(item, index) in overviewAttractions"
+                    :key="`${item.dayArrayIndex}-${item.order}-${item.name}`"
+                    :item="item"
+                    :image-src="getAttractionImage(item.name, index)"
+                    :active="activeOverviewCard === index"
+                    @hover="setActiveOverviewCard(index)"
+                    @image-error="handleImageError"
+                    @select-day="goToDayFromOverview"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <a-empty v-else :description="t('common.noData')" />
-          <div class="overview-meta">
-            <span class="overview-meta-item" style="color: #ffd5c6; font-weight: 700;">
-              {{ t('result.dateRange', { start: tripPlan.start_date, end: tripPlan.end_date }) }}
-            </span>
-            <span v-if="planId" class="overview-meta-item">
-              Plan ID: {{ planId }}
-            </span>
-            <span v-if="tripPlan.overall_suggestions" class="overview-meta-item">
-              {{ tripPlan.overall_suggestions }}
-            </span>
-          </div>
+            <a-empty v-else :description="t('common.noData')" />
+            <div class="overview-meta">
+              <span class="overview-meta-item" style="color: #ffd5c6; font-weight: 700;">
+                {{ t('result.dateRange', { start: tripPlan.start_date, end: tripPlan.end_date }) }}
+              </span>
+              <span v-if="planId" class="overview-meta-item">
+                Plan ID: {{ planId }}
+              </span>
+              <span v-if="tripPlan.overall_suggestions" class="overview-meta-item">
+                {{ tripPlan.overall_suggestions }}
+              </span>
+            </div>
+          </template>
+
+          <!-- 移动端：简洁横向滚动卡片列表 -->
+          <template v-else>
+            <!-- 行程基础信息 -->
+            <div class="mobile-overview-header">
+              <div class="mobile-overview-date">
+                {{ t('result.dateRange', { start: tripPlan.start_date, end: tripPlan.end_date }) }}
+              </div>
+              <div v-if="tripPlan.overall_suggestions" class="mobile-overview-suggestion">
+                {{ tripPlan.overall_suggestions }}
+              </div>
+            </div>
+            <!-- 横向滚动景点卡片 -->
+            <div v-if="overviewAttractions.length > 0" class="mobile-overview-scroll">
+              <div
+                v-for="(item, index) in overviewAttractions"
+                :key="`mob-${item.dayArrayIndex}-${index}`"
+                class="mobile-overview-card"
+                @click="goToDayFromOverview(item.dayArrayIndex)"
+              >
+                <div class="mobile-overview-card-img">
+                  <img
+                    :src="getAttractionImage(item.name, index)"
+                    :alt="item.name"
+                    loading="lazy"
+                    @error="handleImageError"
+                  />
+                </div>
+                <div class="mobile-overview-card-info">
+                  <div class="mobile-overview-card-name">{{ item.name }}</div>
+                  <div v-if="item.description || item.address" class="mobile-overview-card-desc">
+                    {{ item.description || item.address }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a-empty v-else :description="t('common.noData')" />
+          </template>
         </a-card>
 
         <!-- 顶部信息区:预算/地图 -->
@@ -601,6 +675,7 @@ const onTripUpdatedByAI = (updated: TripPlan) => {
 // 响应式窗口宽度，用于控制列数等自适应逻辑
 const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1200)
 const onWindowResize = () => { windowWidth.value = window.innerWidth }
+const isMobile = computed(() => windowWidth.value <= 768)
 
 // 景点列表列数：480px以下1列，其余2列
 const attractionListGrid = computed(() => ({
@@ -4076,10 +4151,16 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
   }
 
   .top-switch-nav {
-    gap: 8px;
+    gap: 0;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin-bottom: 12px;
   }
 
   .top-switch-menu-wrap {
+    flex: 1;
+    min-width: 0;
     overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
@@ -4098,20 +4179,23 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
   }
 
   .top-switch-actions {
-    max-width: 44%;
-    flex-shrink: 0;
+    flex: 0 0 auto;
+    max-width: none;
+    padding-left: 8px;
   }
 
   .top-switch-actions :deep(.ant-space) {
     column-gap: 6px !important;
-    row-gap: 6px !important;
+    row-gap: 4px !important;
+    flex-wrap: nowrap !important;
   }
 
-  .top-switch-actions :deep(.ant-btn-default),
-  .top-switch-actions :deep(.ant-btn-primary) {
-    height: 32px !important;
+  .mobile-action-btn {
+    height: 30px !important;
     padding: 0 10px !important;
     font-size: 11px !important;
+    border-radius: 999px !important;
+    white-space: nowrap;
   }
 
   .top-info-section {
@@ -4210,6 +4294,96 @@ const drawRoutes = async (AMap: any, attractions: any[]): Promise<any[]> => {
 
   .overview-swiper .swiper {
     padding: 2.4rem 0 0.6rem;
+  }
+
+  /* 移动端行程概览 */
+  .mobile-overview-header {
+    padding: 12px 4px 14px;
+  }
+
+  .mobile-overview-date {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffd5c6;
+    margin-bottom: 8px;
+  }
+
+  .mobile-overview-suggestion {
+    font-size: 12px;
+    color: rgba(236, 243, 250, 0.72);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .mobile-overview-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 4px 2px 12px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .mobile-overview-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-overview-card {
+    flex: 0 0 140px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(12, 23, 32, 0.72);
+    border: 1px solid rgba(236, 243, 250, 0.1);
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .mobile-overview-card:active {
+    border-color: rgba(215, 110, 66, 0.5);
+  }
+
+  .mobile-overview-card-img {
+    width: 100%;
+    height: 90px;
+    overflow: hidden;
+  }
+
+  .mobile-overview-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .mobile-overview-card-info {
+    padding: 8px 10px 10px;
+  }
+
+  .mobile-overview-card-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: #ecf3fa;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 4px;
+  }
+
+  .mobile-overview-card-desc {
+    font-size: 11px;
+    color: rgba(236, 243, 250, 0.6);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
   }
 
   /* 预算明细 */
